@@ -28,6 +28,9 @@ void ABuilderPawn::SetupPlayerInputComponent(UInputComponent* PlayerInputCompone
 	
 	PlayerInputComponent->BindAxis("Turn", this, &ABuilderPawn::Turn);
 	PlayerInputComponent->BindAxis("LookUp", this, &ABuilderPawn::LookUp);
+	
+	PlayerInputComponent->BindAction("Boost", IE_Pressed, this, &ABuilderPawn::StartBoost);
+	PlayerInputComponent->BindAction("Boost", IE_Released, this, &ABuilderPawn::StopBoost);
 }
 
 void ABuilderPawn::Tick(float DeltaTime)
@@ -71,4 +74,14 @@ void ABuilderPawn::Turn(float Value)
 void ABuilderPawn::LookUp(float Value)
 {
 	AddControllerPitchInput(Value);
+}
+
+void ABuilderPawn::StartBoost()
+{
+	bIsBoosting = true;
+}
+
+void ABuilderPawn::StopBoost()
+{
+	bIsBoosting = false;
 }

@@ -60,4 +60,7 @@ private:
 	
 	UPROPERTY(EditAnywhere)
 	float MaxPitch = 85.f;
+	
+	void StartBoost();
+	void StopBoost();
 };
