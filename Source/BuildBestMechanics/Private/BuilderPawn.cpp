@@ -1,0 +1,56 @@
+// 2026 sabaka-chabaka
+
+#include "BuildBestMechanics/Public/BuilderPawn.h"
+
+#include "Camera/CameraComponent.h"
+#include "GameFramework/FloatingPawnMovement.h"
+
+ABuilderPawn::ABuilderPawn()
+{
+	PrimaryActorTick.bCanEverTick = true;
+	
+	RootComponent = CreateDefaultSubobject<USceneComponent>(TEXT("RootComponent"));
+	
+	Camera = CreateDefaultSubobject<UCameraComponent>(TEXT("Camera"));
+	Camera->SetupAttachment(RootComponent);
+	
+	Movement = CreateDefaultSubobject<UFloatingPawnMovement>(TEXT("Movement"));
+	Movement->MaxSpeed = 2000.0f;
+}
+
+void ABuilderPawn::SetupPlayerInputComponent(UInputComponent* PlayerInputComponent)
+{
+	Super::SetupPlayerInputComponent(PlayerInputComponent);
+	
+	PlayerInputComponent->BindAxis("MoveForward", this, &ABuilderPawn::MoveForward);
+	PlayerInputComponent->BindAxis("MoveRight", this, &ABuilderPawn::MoveRight);
+	PlayerInputComponent->BindAxis("MoveUp", this, &ABuilderPawn::MoveUp);
+	
+	PlayerInputComponent->BindAxis("Turn", this, &ABuilderPawn::Turn);
+	PlayerInputComponent->BindAxis("LookUp", this, &ABuilderPawn::LookUp);
+}
+
+void ABuilderPawn::MoveForward(float Value)
+{
+	AddMovementInput(GetActorForwardVector(), Value);
+}
+
+void ABuilderPawn::MoveRight(float Value)
+{
+	AddMovementInput(GetActorRightVector(), Value);
+}
+
+void ABuilderPawn::MoveUp(float Value)
+{
+	AddMovementInput(GetActorUpVector(), Value);
+}
+
+void ABuilderPawn::Turn(float Value)
+{
+	AddControllerYawInput(Value);
+}
+
+void ABuilderPawn::LookUp(float Value)
+{
+	AddControllerPitchInput(Value);
+}
