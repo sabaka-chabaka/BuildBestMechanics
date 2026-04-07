@@ -30,6 +30,24 @@ void ABuilderPawn::SetupPlayerInputComponent(UInputComponent* PlayerInputCompone
 	PlayerInputComponent->BindAxis("LookUp", this, &ABuilderPawn::LookUp);
 }
 
+void ABuilderPawn::Tick(float DeltaTime)
+{
+	Super::Tick(DeltaTime);
+	
+	float DesiredSpeed = bIsBoosting ? BaseSpeed * BoostMultiplier : BaseSpeed;
+
+	if (CurrentSpeed < DesiredSpeed)
+	{
+		CurrentSpeed = FMath::FInterpTo(CurrentSpeed, DesiredSpeed, DeltaTime, Acceleration);
+	}
+	else
+	{
+		CurrentSpeed = FMath::FInterpTo(CurrentSpeed, DesiredSpeed, DeltaTime, Deceleration);
+	}
+	
+	Movement->MaxSpeed = CurrentSpeed;
+}
+
 void ABuilderPawn::MoveForward(float Value)
 {
 	AddMovementInput(GetActorForwardVector(), Value);
