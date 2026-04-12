@@ -6,22 +6,7 @@
 UBuildSystem::UBuildSystem()
 {
 	PrimaryComponentTick.bCanEverTick = false;
-}
-
-void UBuildSystem::BeginPlay()
-{
-	Super::BeginPlay();
-	
-	GhostComponent = NewObject<UStaticMeshComponent>(GetOwner());
-	GhostComponent->SetStaticMesh(GhostMesh);
-	GhostComponent->SetCollisionEnabled(ECollisionEnabled::NoCollision);
-	GhostComponent->RegisterComponent();
-
-	if (GhostMaterialBase)
-	{
-		GhostMaterialInst = UMaterialInstanceDynamic::Create(GhostMaterialBase, this);
-		GhostComponent->SetMaterial(0, GhostMaterialInst);
-	}
+	Mode = None;
 }
 
 void UBuildSystem::UpdateGhost(const FVector& LookLocation, const FVector& LookDirection)
@@ -60,6 +45,22 @@ void UBuildSystem::RemoveBlock()
 	//TODO
 }
 
+void UBuildSystem::BeginPlay()
+{
+	Super::BeginPlay();
+	
+	GhostComponent = NewObject<UStaticMeshComponent>(GetOwner());
+	GhostComponent->SetStaticMesh(GhostMesh);
+	GhostComponent->SetCollisionEnabled(ECollisionEnabled::NoCollision);
+	GhostComponent->RegisterComponent();
+
+	if (GhostMaterialBase)
+	{
+		GhostMaterialInst = UMaterialInstanceDynamic::Create(GhostMaterialBase, this);
+		GhostComponent->SetMaterial(0, GhostMaterialInst);
+	}
+}
+
 FVector UBuildSystem::SnapToGrid(const FVector& Location, const FVector& Normal) const
 {
 	FVector Offset = Location + (Normal * (GridSize * 0.5f));
@@ -72,4 +73,38 @@ bool UBuildSystem::TraceForBlock(FHitResult& OutHit, FVector Start, FVector Dir)
 	FCollisionQueryParams Params;
 	Params.AddIgnoredActor(GetOwner());
 	return GetWorld()->LineTraceSingleByChannel(OutHit, Start, End, ECC_Visibility, Params);
+}
+
+void UBuildSystem::SetMode(EBuildMode Mode)
+{
+	this->Mode = Mode;
+}
+
+void UBuildSystem::RouteInput()
+{
+	switch (Mode)
+	{
+	default: break;
+	case Build:
+		{
+			PlaceBlock();
+			break;
+		}
+	case Delete:
+		{
+			RemoveBlock();	
+		}
+	case Setup:
+		{
+			//TODO	
+		}
+	case Paint:
+		{
+			//TODO	
+		}
+	case MoveBlock:
+		{
+			//TODO	
+		}
+	}
 }

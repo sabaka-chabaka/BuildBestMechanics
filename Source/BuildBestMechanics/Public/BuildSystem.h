@@ -6,6 +6,16 @@
 #include "Components/ActorComponent.h"
 #include "BuildSystem.generated.h"
 
+enum EBuildMode : uint8
+{
+	None,
+	Build,
+	Delete,
+	Setup,
+	Paint,
+	MoveBlock
+};
+
 UCLASS(ClassGroup=(Custom), meta=(BlueprintSpawnableComponent))
 class BUILDBESTMECHANICS_API UBuildSystem : public UActorComponent
 {
@@ -35,6 +45,8 @@ protected:
 
 	UPROPERTY(EditAnywhere, Category = "Build")
 	float BuildDistance = 600.0f;
+	
+	EBuildMode Mode;
 
 public:
 	UPROPERTY()
@@ -48,4 +60,7 @@ public:
 
 	FVector SnapToGrid(const FVector& Location, const FVector& Normal) const;
 	bool TraceForBlock(FHitResult& OutHit, FVector Start, FVector Dir) const;
+	
+	void SetMode(EBuildMode Mode);
+	void RouteInput();
 };
