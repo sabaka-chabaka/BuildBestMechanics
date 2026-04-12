@@ -27,6 +27,9 @@ private:
 	UPROPERTY(EditAnywhere)
 	class UFloatingPawnMovement* Movement;
 	
+	UPROPERTY(EditAnywhere, Category="Building")
+	class UBuildSystem* BuildSystem;
+	
 	void MoveForward(float Value);
 	void MoveRight(float Value);
 	void MoveUp(float Value);

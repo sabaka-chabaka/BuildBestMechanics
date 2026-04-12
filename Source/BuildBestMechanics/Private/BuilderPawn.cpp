@@ -2,6 +2,7 @@
 
 #include "BuildBestMechanics/Public/BuilderPawn.h"
 
+#include "BuildSystem.h"
 #include "Camera/CameraComponent.h"
 #include "GameFramework/FloatingPawnMovement.h"
 
@@ -49,6 +50,8 @@ void ABuilderPawn::Tick(float DeltaTime)
 	}
 	
 	Movement->MaxSpeed = CurrentSpeed;
+	
+	BuildSystem->UpdateGhost(GetActorLocation(), GetActorForwardVector());
 }
 
 void ABuilderPawn::MoveForward(float Value)
