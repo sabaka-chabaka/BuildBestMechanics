@@ -36,7 +36,7 @@ void UBuildSystem::PlaceBlock()
 	if (bCanPlace && BlockClass)
 	{
 		FActorSpawnParameters SpawnParams;
-		GetWorld()->SpawnActor<ABlock>(BlockClass, CurrentGridLocation, FRotator::ZeroRotator, SpawnParams);
+		Blocks.Add(GetWorld()->SpawnActor<ABlock>(BlockClass, CurrentGridLocation, FRotator::ZeroRotator, SpawnParams));
 	}
 }
 

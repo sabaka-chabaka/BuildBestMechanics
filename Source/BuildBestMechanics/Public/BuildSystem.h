@@ -63,4 +63,7 @@ public:
 	
 	void SetMode(EBuildMode Mode);
 	void RouteInput();
+	
+	UPROPERTY()
+	TArray<ABlock*> Blocks;
 };
