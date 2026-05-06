@@ -42,7 +42,17 @@ void UBuildSystem::PlaceBlock()
 
 void UBuildSystem::RemoveBlock()
 {
-	//TODO
+	FVector LookLocation = GetOwner()->GetActorLocation();
+	FVector LookDirection = GetOwner()->GetActorForwardVector();
+
+	if (FHitResult Hit; TraceForBlock(Hit, LookLocation, LookDirection))
+	{
+		if (ABlock* Block = Cast<ABlock>(Hit.GetActor()))
+		{
+			Blocks.Remove(Block);
+			Block->Destroy();
+		}
+	}
 }
 
 void UBuildSystem::BeginPlay()
@@ -93,18 +103,22 @@ void UBuildSystem::RouteInput()
 	case Delete:
 		{
 			RemoveBlock();	
+			break;
 		}
 	case Setup:
 		{
 			//TODO	
+			break;
 		}
 	case Paint:
 		{
 			//TODO	
+			break;
 		}
 	case MoveBlock:
 		{
 			//TODO	
+			break;
 		}
 	}
 }
